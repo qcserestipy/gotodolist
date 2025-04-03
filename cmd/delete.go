@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"github.com/qcserestipy/gotodolist/pkg/utils"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
@@ -17,22 +18,14 @@ func DeleteItemCmd() *cobra.Command {
 				return
 			}
 			index := int(args[0][0] - '0')
-			if index < 0 || index >= len(Todolist) {
-				logrus.Error("Invalid index provided.")
-				return
-			}
-			// Find the task by index and delete it
-			for _, task := range Todolist {
+			for i, task := range utils.Todolist {
 				if task.TaskId == index {
 					logrus.Infof("Deleting task: %s", task.Task)
-					// Remove the task from the list
-					Todolist = append(Todolist[:index], Todolist[index+1:]...)
-					logrus.Infof("Deleted task at index: %d", index)
+					utils.Todolist = append(utils.Todolist[:i], utils.Todolist[i+1:]...)
+					utils.WriteTodoListFile()
 					break
 				}
 			}
-			// Todolist = append(Todolist[:index], Todolist[index+1:]...)
-			// logrus.Infof("Deleted task at index: %d", index)
 		},
 	}
 

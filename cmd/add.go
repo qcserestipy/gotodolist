@@ -3,6 +3,7 @@ package cmd
 import (
 	"time"
 
+	"github.com/qcserestipy/gotodolist/pkg/utils"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
@@ -27,13 +28,14 @@ func AddItemCmd() *cobra.Command {
 				logrus.Warn("No description provided for the task.")
 				description = "No description"
 			}
-			Todolist = append(Todolist, TodoListItem{
+			utils.Todolist = append(utils.Todolist, utils.TodoListItem{
 				Task:        args[0],
-				TaskId:      len(Todolist) + 1,
+				TaskId:      len(utils.Todolist) + 1,
 				Description: description,
 				CreatedAt:   time.Now().Format(time.RFC3339),
 				Done:        false,
 			})
+			utils.WriteTodoListFile()
 			logrus.Infof("Added task: %s", args[0])
 		},
 	}
